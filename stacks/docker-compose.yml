@@ -5,7 +5,7 @@ services:
     # replace username/repo:tag with your name and image details
     image: jaiger/get-started:part2
     deploy:
-      replicas: 5
+      replicas: 4
       restart_policy:
         condition: on-failure
       resources:
@@ -25,6 +25,18 @@ services:
     deploy:
       placement:
         constraints: [node.role == manager]
+    networks:
+      - webnet
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - "/home/docker/data:/data"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    command: redis-server --appendonly yes
     networks:
       - webnet
 networks:
